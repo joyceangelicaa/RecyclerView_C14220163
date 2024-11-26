@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -43,7 +44,15 @@ class adapterRecView (private val listWayang: ArrayList<wayang>) : RecyclerView
             .into(holder._gambarWayang)
 
         holder._gambarWayang.setOnClickListener {
-            Toast.makeText(holder.itemView.context,wayang.nama,Toast.LENGTH_SHORT).show()
+//            Toast.makeText(holder.itemView.context,wayang.nama,Toast.LENGTH_SHORT).show()
+            onItemClickCallback.onItemClicked(listWayang[position])
         }
+    }
+    private lateinit var onItemClickCallback : OnItemClickListener
+    interface OnItemClickListener {
+        fun onItemClicked(data: wayang)
+    }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickListener) {
+        this.onItemClickCallback = onItemClickCallback
     }
 }

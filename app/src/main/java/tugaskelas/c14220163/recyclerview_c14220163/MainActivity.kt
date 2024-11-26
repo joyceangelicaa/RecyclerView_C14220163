@@ -1,6 +1,7 @@
 package tugaskelas.c14220163.recyclerview_c14220163
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +47,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun TampilData(){
-//        _rvWayanng.layoutManager = LinearLayoutManager(this)
+        _rvWayanng.layoutManager = LinearLayoutManager(this)
 //        _rvWayanng.layoutManager = GridLayoutManager(this,2)
-        _rvWayanng.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
+//        _rvWayanng.layoutManager = StaggeredGridLayoutManager(2,LinearLayoutManager.VERTICAL)
         _rvWayanng.adapter = adapterRecView(arWayang)
+
+        val adapterWayang = adapterRecView(arWayang)
+        _rvWayanng.adapter = adapterWayang
+
+        adapterWayang.setOnItemClickCallback(object : adapterRecView.OnItemClickListener {
+            override fun onItemClicked(data: wayang) {
+                Toast.makeText(this@MainActivity, data.nama, Toast.LENGTH_SHORT).show()
+
+                val intent = Intent (this@MainActivity,detWayang::class.java)
+                intent.putExtra("kirimData",data)
+                startActivity(intent)
+            }
+        })
     }
 }
 private lateinit var _nama : Array<String>
