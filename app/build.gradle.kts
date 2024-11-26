@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "tugaskelas.c14220163.recyclerview_c14220163"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "tugaskelas.c14220163.recyclerview_c14220163"
@@ -45,4 +45,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.picasso)
 }
