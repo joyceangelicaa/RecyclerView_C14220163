@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.content.Intent
+import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,12 +31,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun SiapkanData(){
-        _nama = resources.getStringArray(R.array.namaWayang)
-        _deskripsi = resources.getStringArray(R.array.deskripsiWayang)
-        _karakter = resources.getStringArray(R.array.karakterUtamaWayang)
-        _gambar = resources.getStringArray(R.array.gambarWayang)
+        _nama = resources.getStringArray(R.array.namaWayang).toMutableList()
+        _deskripsi = resources.getStringArray(R.array.deskripsiWayang).toMutableList()
+        _karakter = resources.getStringArray(R.array.karakterUtamaWayang).toMutableList()
+        _gambar = resources.getStringArray(R.array.gambarWayang).toMutableList()
     }
     fun TambahData(){
+        arWayang.clear()
         for (position in _nama.indices){
             val data =wayang(
                 _gambar[position],
@@ -55,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         val adapterWayang = adapterRecView(arWayang)
         _rvWayanng.adapter = adapterWayang
 
-        adapterWayang.setOnItemClickCallback(object : adapterRecView.OnItemClickListener {
+        adapterWayang.setOnItemClickCallback(object : adapterRecView.OnItemClickCallback {
             override fun onItemClicked(data: wayang) {
                 Toast.makeText(this@MainActivity, data.nama, Toast.LENGTH_SHORT).show()
 
@@ -63,13 +65,44 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("kirimData",data)
                 startActivity(intent)
             }
+
+            override fun delData(pos: Int) {
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("HAPUS DATA")
+                    .setMessage("Apakah benar data"+ _nama[pos] + "akan dihapus?")
+                    .setPositiveButton(
+                        "HAPUS", { dialog, which ->
+                            _gambar.removeAt(pos)
+                            _nama.removeAt(pos)
+                            _deskripsi.removeAt(pos)
+                            _karakter.removeAt(pos)
+                            TambahData()
+                            TampilData()
+                        }
+                    )
+                    .setNegativeButton(
+                        "BATAL", { dialog, which ->
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Data Batal Dihapus",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    ).show()
+            }
         })
     }
 }
-private lateinit var _nama : Array<String>
-private lateinit var _karakter : Array<String>
-private lateinit var _deskripsi : Array<String>
-private lateinit var _gambar : Array<String>
+//private lateinit var _nama : Array<String>
+//private lateinit var _karakter : Array<String>
+//private lateinit var _deskripsi : Array<String>
+//private lateinit var _gambar : Array<String>
+
+private lateinit var _nama : MutableList<String>
+private lateinit var _karakter : MutableList<String>
+private lateinit var _deskripsi : MutableList<String>
+private lateinit var _gambar : MutableList<String>
+
 
 private var arWayang = arrayListOf<wayang>()
 private lateinit var _rvWayanng : RecyclerView
